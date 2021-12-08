@@ -1,0 +1,1 @@
+export const MasterChefContract = '0x73feaa1eE314F8c655E354234017bE2193C9E24E'

@@ -53,13 +53,13 @@ export const usePoolContract = (page, pageSize) => {
     }
   }
 
-  const getPoolInfo = async (page, pageSize) => {
+  const getPoolInfo = async (page, pageSize, pageCount) => {
     const web3 = new Web3(ethereum)
     const masterChefContract = new web3.eth.Contract(ABI_MasterChef, MasterChefContract)
     try {
       const arr = new Array(pageSize).fill(0)
       const _data = arr.map(async (item, idx) => {
-        if (pageSize * page + idx + 1 < poolLength) {
+        if (pageSize * page + idx + 1 < pageSize * pageCount) {
           let pool = await masterChefContract.methods.poolInfo(pageSize * page + idx + 1).call()
           const pairContract = new web3.eth.Contract(ABI_Pair, pool.lpToken)
           const token0 = await pairContract.methods.token0().call()
@@ -86,17 +86,17 @@ export const usePoolContract = (page, pageSize) => {
   }, [])
 
   useEffect(() => {
-    if (status === 'connected') {
+    if (status === 'connected' && account) {
       setState({ data: state.data, isLoading: true, pageCount: state.pageCount})
       getTotalPages(pageSize).then(_pageCount => {
-        getReward().then( _reward => {
-          getPoolInfo(page, pageSize).then(_data => {
+        getReward().then( _reward => {         
+          getPoolInfo(page, pageSize, _pageCount).then(_data => {
             setState({ data: _data, isLoading: false, pageCount: _pageCount, reward: _reward})
           })
         })
       })
     }
-  }, [page, pageSize, status])
+  }, [page, pageSize, status, account])
 
   return state  
 }

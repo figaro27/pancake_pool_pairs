@@ -68,7 +68,12 @@ const PoolPairTable = ({ data }) => {
                   <img src={_data.token1Logo || ''} width="40px" height="40px" alt='' />
                   <span>{_data.token1Symbol || ''}</span>
                   <span>{sortAddress(_data.token1)}</span>
-                  <span>{_data.allocPoint === 0 ? 'Inactive': 'Active'}</span>
+                  
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span>{_data.allocPoint == 0 ? 'Inactive': 'Active'}</span>
                 </div>
               </td>
             </tr>

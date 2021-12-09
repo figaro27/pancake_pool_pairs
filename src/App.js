@@ -15,16 +15,16 @@ function App() {
     account
   );
 
-  const [pageSize, setPageSize] = useState(10)
   const [pageIndex, setPageIndex] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
   const [canPreviousPage, setCanPrevousPage] = useState(false)
   const [canNextPage, setCanNextPage] = useState(false)
   const { pageCount, data, reward, isLoading } = usePoolContract(pageIndex, pageSize)
 
   useEffect(() => {
-    setPageSize(10)
-    setPageIndex(0)
+    if( status === 'connected' && account ) setPageIndex(0)
   }, [status, account])
+
   useEffect(() => {
     setCanNextPage(pageCount > pageIndex + 1 ? true: false)
     setCanPrevousPage( pageIndex > 0 ? true: false)
